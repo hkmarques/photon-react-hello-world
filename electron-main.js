@@ -10,6 +10,24 @@ const WEBPACK_DEV_URL = 'http://localhost:3000';
 // be closed automatically when the JavaScript object is garbage collected.
 let mainWindow;
 
+const mainMenuTemplate = [
+  {
+    label: 'File',
+    submenu: [
+      { label: 'Option 1' },
+      { role: 'reload' },
+      {
+        label: 'Quit',
+        accelerator: process.platform === 'darwin' ? 'Command+Q' : 'Ctrl+Q',
+        click() {
+          app.quit();
+        }
+      }
+    ]
+  },
+  { label: 'Another Menu', submenu: [{ label: 'Yet Another Test' }] }
+];
+
 function createWindow() {
   // Create the browser window.
   mainWindow = new BrowserWindow({ width: 800, height: 600 });
@@ -35,6 +53,12 @@ function createWindow() {
     mainWindow = null;
     app.quit();
   });
+
+  // Build menu from template
+  const mainMenu = Menu.buildFromTemplate(mainMenuTemplate);
+
+  // Insert menu
+  Menu.setApplicationMenu(mainMenu);
 }
 
 // This method will be called when Electron has finished
