@@ -25,7 +25,18 @@ const mainMenuTemplate = [
       }
     ]
   },
-  { label: 'Another Menu', submenu: [{ label: 'Yet Another Test' }] }
+  {
+    label: 'Developer Tools',
+    submenu: [
+      {
+        label: 'Toggle DevTools',
+        accelerator: process.platform === 'darwin' ? 'Command+I' : 'Ctrl+I',
+        click(item, focusedWindow) {
+          focusedWindow.toggleDevTools();
+        }
+      }
+    ]
+  }
 ];
 
 function createWindow() {
@@ -35,13 +46,13 @@ function createWindow() {
   // and load the index.html of the app.
   // mainWindow.loadFile('index.html');
   const startURL =
-    process.env.NODE_ENV === 'production'
-      ? url.format({
+    process.env.NODE_ENV === 'dev'
+      ? WEBPACK_DEV_URL
+      : url.format({
           pathname: path.join(__dirname, '/build/index.html'),
-          protocol: 'file',
+          protocol: 'file:',
           slashes: true
-        })
-      : WEBPACK_DEV_URL;
+        });
 
   mainWindow.loadURL(startURL);
 
