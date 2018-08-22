@@ -41,7 +41,13 @@ const mainMenuTemplate = [
 
 function createWindow() {
   // Create the browser window.
-  mainWindow = new BrowserWindow({ width: 800, height: 600 });
+  mainWindow = new BrowserWindow({
+    width: 800,
+    height: 400,
+    minWidth: 800,
+    minHeight: 400,
+    titleBarStyle: 'hidden'
+  });
 
   // and load the index.html of the app.
   // mainWindow.loadFile('index.html');
