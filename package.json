@@ -3,14 +3,38 @@
   "version": "0.1.0",
   "private": true,
   "dependencies": {
+    "electron": "^2.0.7",
     "react": "^16.4.2",
     "react-dom": "^16.4.2",
     "react-scripts": "1.1.4"
   },
   "scripts": {
-    "start": "react-scripts start",
-    "build": "react-scripts build",
+    "start": "$(npm bin)/concurrently 'npm run react-start' '$(npm bin)/wait-on http://localhost:3000/ && npm run electron-start'",
+    "react-start": "react-scripts start",
+    "electron-start": "electron .",
     "test": "react-scripts test --env=jsdom",
-    "eject": "react-scripts eject"
-  }
+    "build-mac": "NODE_ENV=production react-scripts build && npm run package-mac",
+    "build-win": "NODE_ENV=production react-scripts build && npm run package-win",
+    "build-linux": "NODE_ENV=production react-scripts build && npm run package-linux",
+    "package-mac": "electron-packager . --overwrite --platform=darwin --arch=x64 --icon=assets/icons/mac/icon.icns --prune=true --out=release-builds",
+    "package-win": "electron-packager . photon-react-hello-world --overwrite --asar=true --platform=win32 --arch=ia32 --icon=assets/icons/win/icon.ico --prune=true --out=release-builds --version-string.CompanyName=CE --version-string.FileDescription=CE --version-string.ProductName=\"Photon React Hello World\"",
+    "package-linux": "electron-packager . photon-react-hello-world --overwrite --asar=true --platform=linux --arch=x64 --icon=assets/icons/png/icon.png --prune=true --out=release-builds"
+  },
+  "description": "A simple Hello World desktop app done with React (create-react-app), Electron and Photon",
+  "main": "electron-main.js",
+  "devDependencies": {
+    "concurrently": "^3.6.1",
+    "electron-packager": "^12.1.1",
+    "wait-on": "^2.1.0"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/hkmarques/photon-react-hello-world.git"
+  },
+  "author": "Herick Oliveira",
+  "license": "Unlicense",
+  "bugs": {
+    "url": "https://github.com/hkmarques/photon-react-hello-world/issues"
+  },
+  "homepage": "./"
 }
